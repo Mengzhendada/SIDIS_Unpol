@@ -619,17 +619,17 @@ int GenerateBinInfoFile(const char * filename, const double Ebeam, const char * 
   double xlist[3] = {0.0,0.25,0.5};
 
 int xi = 1;
-  for (int Qi = 0; Qi < 4; Qi++){//Q2 loop //here it was (int Qi = 0; Qi < 12; Qi++)
+  for (int Qi = 0; Qi < sizeof(Q2list)/sizeof(Q2list[0])-1; Qi++){//Q2 loop //here it was (int Qi = 0; Qi < 12; Qi++)
     Xmin[1] = Q2list[Qi];
     Xmax[1] = Q2list[Qi+1];
-    for (int zi = 0; zi < 8; zi++){//z loop //here it was (int zi = 0; zi < 12; zi++)
+    for (int zi = 0; zi < sizeof(zlist)/sizeof(zlist[0])-1; zi++){//z loop //here it was (int zi = 0; zi < 12; zi++)
       Xmin[2] = zlist[zi];
       Xmax[2] = zlist[zi+1];
-    for (int Pti = 0; Pti < 5; Pti++){  //here it was (int Pti = 0; Pti < 13; Pti++)
+    for (int Pti = 0; Pti < sizeof(Ptlist)/sizeof(Ptlist[0])-1; Pti++){  //here it was (int Pti = 0; Pti < 13; Pti++)
       Xmin[3] = Ptlist[Pti];
       Xmax[3] = Ptlist[Pti+1];
       Xmin[0] = xlist[0];
-      for (int kj = 1; kj < 3;){ //here it was (int kj = 1; kj < 6;)
+      for (int kj = 1; kj < sizeof(xlist)/sizeof(xlist[0]);){ //here it was (int kj = 1; kj < 6;)
 
 	Xmax[0] = xlist[kj];
 	sidis.SetRange(Xmin, Xmax);
@@ -652,7 +652,8 @@ int xi = 1;
 	  }
 	}
 	hphih->Scale(lumi * time * eff / Nsim);
-	if ((hphih->Integral(1, -1) < statlist[Qi] && kj < 20) || (hphih->Integral(1, -1) < 0.25 * statlist[Qi] && kj == 20)){ //here it was ((hphih->Integral(1, -1) < statlist[Qi] && kj < 12) || (hphih->Integral(1, -1) < 0.2 * statlist[Qi] && kj == 12)
+	if ((hphih->Integral(1, -1) < statlist[Qi] && kj < sizeof(xlist)/sizeof(xlist[0])-1) || (hphih->Integral(1, -1) < 0.25 * statlist[Qi] && kj == sizeof(xlist)/sizeof(xlist[0])-1)){ //here it was ((hphih->Integral(1, -1) < statlist[Qi] && kj < 12) || (hphih->Integral(1, -1) < 0.2 * statlist[Qi] && kj == 12; Here the criterion is the list length -1(the list using kj indices )
+        //if ((hphih->Integral(1, -1) < statlist[Qi] && kj < 20) || (hphih->Integral(1, -1) < 0.25 * statlist[Qi] && kj == 20)){ //here it was ((hphih->Integral(1, -1) < statlist[Qi] && kj < 12) || (hphih->Integral(1, -1) < 0.2 * statlist[Qi] && kj == 12)
 	  std::cout<<" hphih integral "<<hphih->Integral(1,-1)<<std::endl; 
           hphih->Delete();
 	  kj++;

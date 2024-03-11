@@ -623,7 +623,7 @@ int GenerateBinInfoFile(const char * filename, const double Ebeam, const char * 
 
 int xi = 1;
   for (int Qi = 0; Qi < sizeof(Q2list)/sizeof(Q2list[0])-1; Qi++){//Q2 loop //here it was (int Qi = 0; Qi < 12; Qi++)
-    std::cout<<"size of Q2list "<<sizeof(Q2list)/sizeof(Q2list[0])-1<<std::endl;
+    //std::cout<<"size of Q2list "<<sizeof(Q2list)/sizeof(Q2list[0])-1<<std::endl;
     Xmin[1] = Q2list[Qi];
     Xmax[1] = Q2list[Qi+1];
     for (int zi = 0; zi < sizeof(zlist)/sizeof(zlist[0])-1; zi++){//z loop //here it was (int zi = 0; zi < 12; zi++)

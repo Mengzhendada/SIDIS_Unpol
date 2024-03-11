@@ -612,8 +612,8 @@ int GenerateBinInfoFile(const char * filename, const double Ebeam, const char * 
   ////double statlist[8] = {1.0e7, 1.0e7, 6.4e6, 6.4e6, 3.2e6, 1.6e6, 1.2e6, 1.0e6}; //here it was statlist[6] = {1.0e7, 6.4e6, 3.2e6, 1.6e6, 1.2e6, 1.0e6};
   ////double statlist[12] = {0.5e7, 0.5e7, 0.5e7, 0.5e7, 3.2e6, 3.2e6, 3.2e6, 3.2e6, 3.2e6, 1.6e6, 1.2e6, 1.0e6};
   
-  double zlist[9] = {0.3, 0.35, 0.4, 0.45, 0.5, 0.55, 0.6, 0.65, 0.7};
-  ////double zlist[13] = {0.3, 0.325, 0.35, 0.375, 0.4, 0.425, 0.45, 0.475, 0.5, 0.55, 0.6, 0.65, 0.7};
+  //double zlist[9] = {0.3, 0.35, 0.4, 0.45, 0.5, 0.55, 0.6, 0.65, 0.7};
+  double zlist[17] = {0.3, 0.325, 0.35, 0.375, 0.4, 0.425, 0.45, 0.475, 0.5,0.525, 0.55,0.575, 0.6,0.625, 0.65,0.675, 0.7};
   
   double Ptlist[6] = {0.0, 0.1, 0.2, 0.3, 0.4, 0.5};  //double Ptlist[7] = {0.0, 0.2, 0.4, 0.6, 0.8, 1.0, 1.6};
   ////double Ptlist[14] = {0.0, 0.05, 0.1, 0.15, 0.2, 0.25, 0.3, 0.35, 0.4, 0.5, 0.6, 0.8, 1.0, 1.6};
@@ -621,17 +621,17 @@ int GenerateBinInfoFile(const char * filename, const double Ebeam, const char * 
   double xlist[4] = {0,0.25,0.4,0.7};
 
 int xi = 1;
-  for (int Qi = 0; Qi < 4; Qi++){//Q2 loop //here it was (int Qi = 0; Qi < 12; Qi++)
+  for (int Qi = 0; Qi < sizeof(Q2list)/sizeof(Q2list[0])-1; Qi++){//Q2 loop //here it was (int Qi = 0; Qi < 12; Qi++)
     Xmin[1] = Q2list[Qi];
     Xmax[1] = Q2list[Qi+1];
-    for (int zi = 0; zi < 8; zi++){//z loop //here it was (int zi = 0; zi < 12; zi++)
+    for (int zi = 0; zi < sizeof(zlist)/sizeof(zlist[0])-1; zi++){//z loop //here it was (int zi = 0; zi < 12; zi++)
       Xmin[2] = zlist[zi];
       Xmax[2] = zlist[zi+1];
-    for (int Pti = 0; Pti < 5; Pti++){  //here it was (int Pti = 0; Pti < 13; Pti++)
+    for (int Pti = 0; Pti < sizeof(Ptlist)/sizeof(Ptlist[0])-1; Pti++){  //here it was (int Pti = 0; Pti < 13; Pti++)
       Xmin[3] = Ptlist[Pti];
       Xmax[3] = Ptlist[Pti+1];
       Xmin[0] = xlist[0];
-      for (int kj = 1; kj < 4;){ //here it was (int kj = 1; kj < 6;)
+      for (int kj = 1; kj < sizeof(xlist)/sizeof(xlist[0]);){ //here it was (int kj = 1; kj < 6;)
         std::cout<<"kj "<<kj<<std::endl;
         Xmax[0] = xlist[kj];
 	sidis.SetRange(Xmin, Xmax);
@@ -654,7 +654,8 @@ int xi = 1;
 	  }
 	}
 	hphi->Scale(lumi * time * eff / Nsim);
-	if ((hphi->Integral(1, -1) < statlist[Qi] && kj < 3) || (hphi->Integral(1, -1) < 0.25 * statlist[Qi] && kj == 3)){ //here it was ((hphi->Integral(1, -1) < statlist[Qi] && kj < 12) || (hphi->Integral(1, -1) < 0.2 * statlist[Qi] && kj == 12; Here the criterion is the list length -1(the list using kj indices )
+	if ((hphi->Integral(1, -1) < statlist[Qi] && kj < sizeof(xlist)/sizeof(xlist[0])-1) || (hphi->Integral(1, -1) < 0.25 * statlist[Qi] && kj == sizeof(xlist)/sizeof(xlist[0])-1)){ //here it was ((hphi->Integral(1, -1) < statlist[Qi] && kj < 12) || (hphi->Integral(1, -1) < 0.2 * statlist[Qi] && kj == 12; Here the criterion is the list length -1(the list using kj indices )
+	//if ((hphi->Integral(1, -1) < statlist[Qi] && kj < 3) || (hphi->Integral(1, -1) < 0.25 * statlist[Qi] && kj == 3)){ //here it was ((hphi->Integral(1, -1) < statlist[Qi] && kj < 12) || (hphi->Integral(1, -1) < 0.2 * statlist[Qi] && kj == 12; Here the criterion is the list length -1(the list using kj indices )
           std::cout<<"integral "<<hphi->Integral(1,-1)<<std::endl;
           hphi->Delete();
 	  kj++;
