@@ -13,8 +13,7 @@
 #include "Lsidis3.h"
 
 // Setting: helium-3 Np:Nn = 2:1, absolute number corresponds to lumi 10^36 neutrons cm^{-2} s^{-1}
-// Setting: H2 Np:Nn=1:0
-const double Np = 1.0;
+const double Np = 2.0;
 const double Nn = 1.0;
 
 // Acceptance 
@@ -589,11 +588,11 @@ int GenerateBinInfoFile(const char * filename, const double Ebeam, const char * 
   sidis.SetFFset("DSSFFlo");
   double lumi = 1.0e+10 * pow(0.197327, 2); //new, originally it was 1.0e+10 * pow(0.197327, 2);
   double eff = 0.85;
-  double time = 3.5 * 24.0 * 3600.0;             //here it was time = 48.0 * 24.0 * 3600.0;
-  if (Ebeam < 10.0) time = 1.5 * 24.0 * 3600.0;  //here it was time = 21.0 * 24.0 * 3600.0;
+  double time = 70.5 * 24.0 * 3600.0;             //here it was time = 48.0 * 24.0 * 3600.0;
+  if (Ebeam < 10.0) time = 30.5 * 24.0 * 3600.0;  //here it was time = 21.0 * 24.0 * 3600.0;
   double Nsim = 1.0e6;  //new, double Nsim = 1.0e6;
-  double Xmin[6] = {0.0, 0.0, 0.0, 0.0, -M_PI, -M_PI}; //0.0, 0.0, 0.0, 0.0, -M_PI, -M_PI
-  double Xmax[6] = {0.7, 0.0, 0.0, 0.0, M_PI, M_PI};  //0.7, 0.0, 0.0, 0.0, M_PI, M_PI //x, Q2, z, Pt, phih, phiS
+  double Xmin[6] = {0.0, 0.0, 0.0, 0.0, 0.0, -M_PI}; //0.0, 0.0, 0.0, 0.0, -M_PI, -M_PI
+  double Xmax[6] = {0.7, 0.0, 0.0, 0.0, 0.0, M_PI};  //0.7, 0.0, 0.0, 0.0, M_PI, M_PI //x, Q2, z, Pt, phih, phiS
   double weight = 0;
   double acc = 0;
   int Nx = 0;
@@ -607,40 +606,35 @@ int GenerateBinInfoFile(const char * filename, const double Ebeam, const char * 
   ////double Q2list[9] = {1.0, 1.5, 2.0, 2.5, 3.0, 4.0, 5.0, 6.0, 8.0}; //here it was Q2list[7] = {1.0, 2.0, 3.0, 4.0, 5.0, 6.0, 8.0};
   ////double Q2list[13] = {1.0, 1.25, 1.5, 1.75, 2.0, 2.25, 2.5, 2.75, 3.0, 4.0, 5.0, 6.0, 8.0}; 
 
-  double statlist[4] = {3.0e5, 3.0e5, 2.1e5, 2.1e5};//For D2, time is 20time shorter, lumi is same, xs is 2/3, overall, stat reqirement is 1/30 of He3
-  //double statlist[4] = {1.0e7, 1.0e7, 6.4e6, 6.4e6};//For He3
+  double statlist[4] = {1.0e7, 1.0e7, 6.4e6, 6.4e6};
   ////double statlist[8] = {1.0e7, 1.0e7, 6.4e6, 6.4e6, 3.2e6, 1.6e6, 1.2e6, 1.0e6}; //here it was statlist[6] = {1.0e7, 6.4e6, 3.2e6, 1.6e6, 1.2e6, 1.0e6};
   ////double statlist[12] = {0.5e7, 0.5e7, 0.5e7, 0.5e7, 3.2e6, 3.2e6, 3.2e6, 3.2e6, 3.2e6, 1.6e6, 1.2e6, 1.0e6};
   
-  //double zlist[9] = {0.3, 0.35, 0.4, 0.45, 0.5, 0.55, 0.6, 0.65, 0.7};
-  double zlist[17] = {0.3, 0.325, 0.35, 0.375, 0.4, 0.425, 0.45, 0.475, 0.5,0.525, 0.55,0.575, 0.6,0.625, 0.65,0.675, 0.7};
+  double zlist[9] = {0.3, 0.35, 0.4, 0.45, 0.5, 0.55, 0.6, 0.65, 0.7};
   ////double zlist[13] = {0.3, 0.325, 0.35, 0.375, 0.4, 0.425, 0.45, 0.475, 0.5, 0.55, 0.6, 0.65, 0.7};
   
   double Ptlist[6] = {0.0, 0.1, 0.2, 0.3, 0.4, 0.5};  //double Ptlist[7] = {0.0, 0.2, 0.4, 0.6, 0.8, 1.0, 1.6};
   ////double Ptlist[14] = {0.0, 0.05, 0.1, 0.15, 0.2, 0.25, 0.3, 0.35, 0.4, 0.5, 0.6, 0.8, 1.0, 1.6};
 
-  double xlist[4] = {0,0.25,0.4,0.7};
-
 int xi = 1;
-  for (int Qi = 0; Qi < sizeof(Q2list)/sizeof(Q2list[0])-1; Qi++){//Q2 loop //here it was (int Qi = 0; Qi < 12; Qi++)
-    std::cout<<"size of Q2list "<<sizeof(Q2list)/sizeof(Q2list[0])-1<<std::endl;
+  for (int Qi = 0; Qi < 4; Qi++){//Q2 loop //here it was (int Qi = 0; Qi < 12; Qi++)
     Xmin[1] = Q2list[Qi];
     Xmax[1] = Q2list[Qi+1];
-    for (int zi = 0; zi < sizeof(zlist)/sizeof(zlist[0])-1; zi++){//z loop //here it was (int zi = 0; zi < 12; zi++)
+    for (int zi = 0; zi < 8; zi++){//z loop //here it was (int zi = 0; zi < 12; zi++)
       Xmin[2] = zlist[zi];
       Xmax[2] = zlist[zi+1];
-    for (int Pti = 0; Pti < sizeof(Ptlist)/sizeof(Ptlist[0])-1; Pti++){  //here it was (int Pti = 0; Pti < 13; Pti++)
+    for (int Pti = 0; Pti < 5; Pti++){  //here it was (int Pti = 0; Pti < 13; Pti++)
       Xmin[3] = Ptlist[Pti];
       Xmax[3] = Ptlist[Pti+1];
-      Xmin[0] = xlist[0];
-      for (int kj = 1; kj < sizeof(xlist)/sizeof(xlist[0]);){ //This part is to combin x bins if there are not enough counts
-        std::cout<<"kj for x list "<<kj<<std::endl;
-        Xmax[0] = xlist[kj];
+      Xmin[4] = phihlist[0];
+      for (int kj = 1; kj < 21;){ //here it was (int kj = 1; kj < 6;)
+
+	Xmax[4] = phihlist[kj];
 	sidis.SetRange(Xmin, Xmax);
-	TH1D * hphi = new TH1D("hphi", "hphi", 7000, -M_PI, M_PI);
+	TH1D * hx = new TH1D("hx", "hx", 7000, 0.0, 0.7);
 	////printf("Q2:%.1f-%.1f  z:%.2f-%.2f  Pt:%.1f-%.1f\n",
-        printf("Q2:%.2f-%.2f  z:%.3f-%.3f  Pt:%.2f-%.2f  x:%.3f-%.3f\n",
-	       Xmin[1], Xmax[1], Xmin[2], Xmax[2], Xmin[3], Xmax[3], Xmin[0], Xmax[0]);
+        printf("Q2:%.2f-%.2f  z:%.3f-%.3f  Pt:%.2f-%.2f  phih:%.3f-%.3f\n",
+	       Xmin[1], Xmax[1], Xmin[2], Xmax[2], Xmin[3], Xmax[3], Xmin[4], Xmax[4]);
 	for (Long64_t i = 0; i < Nsim; i++){//generate events
 	  weight = sidis.GenerateEvent(0, 1);
 	  if (weight > 0){
@@ -652,34 +646,31 @@ int xi = 1;
 	    Ph = sidis.GetLorentzVector("Ph");
 	    acc = GetAcceptance_e(lp) * GetAcceptance_hadron(Ph, hadron);
 	    if (acc > 0)
-	      hphi->Fill(sidis.GetVariable("phih"), weight * acc);
+	      hx->Fill(sidis.GetVariable("x"), weight * acc);
 	  }
 	}
-	hphi->Scale(lumi * time * eff / Nsim);
-	if ((hphi->Integral(1, -1) < statlist[Qi] && kj < sizeof(xlist)/sizeof(xlist[0])-1) || (hphi->Integral(1, -1) < 0.25 * statlist[Qi] && kj == sizeof(xlist)/sizeof(xlist[0])-1)){ //here it was ((hphi->Integral(1, -1) < statlist[Qi] && kj < 12) || (hphi->Integral(1, -1) < 0.2 * statlist[Qi] && kj == 12; Here the criterion is the list length -1(the list using kj indices )
-          std::cout<<"integral "<<hphi->Integral(1,-1)<<std::endl;
-          hphi->Delete();
+	hx->Scale(lumi * time * eff / Nsim);
+	if ((hx->Integral(1, -1) < statlist[Qi] && kj < 4) || (hx->Integral(1, -1) < 0.25 * statlist[Qi] && kj == 4)){ //here it was ((hx->Integral(1, -1) < statlist[Qi] && kj < 12) || (hx->Integral(1, -1) < 0.2 * statlist[Qi] && kj == 12)
+	  hx->Delete();
 	  kj++;
 	  continue;
 	}
 	Nx = 0;
 	xi = 1;
 	for (int xj = 1; xj <= 7000; xj++){
-	  if (hphi->Integral(xi, xj) > statlist[Qi] || xj == 7000){
+	  if (hx->Integral(xi, xj) > statlist[Qi] || xj == 7000){
 	    ////fprintf(fp, "%.1f\t %.1f\t %.2f\t %.2f\t %.1f\t %.1f\t %.4f\t %.4f\n",
             fprintf(fp, "%.2f\t %.2f\t %.3f\t %.3f\t %.2f\t %.2f\t %.4f\t %.4f\t %.4f\t %.4f\n",
-		    Xmin[1], Xmax[1], Xmin[2], Xmax[2], Xmin[3], Xmax[3],
-		    hphi->GetBinLowEdge(xi), hphi->GetBinLowEdge(xj+1),
-                    Xmin[0], Xmax[0])
-              ;
+		    Xmin[1], Xmax[1], Xmin[2], Xmax[2], Xmin[3], Xmax[3], Xmin[4], Xmax[4],
+		    hx->GetBinLowEdge(xi), hx->GetBinLowEdge(xj+1));
 	    Nx++;
 	    xi = xj + 1;
 	  }
 	}
 	std::cout << Nx << std::endl;
-	hphi->Delete();      
+	hx->Delete();      
 
-	Xmin[0] = xlist[kj];
+	Xmin[4] = phihlist[kj];
 	kj++;
       }
     }
@@ -739,8 +730,8 @@ int AnalyzeEstatUT3(const char * readfile, const char * savefile, const double E
   sidis.SetFFset("DSSFFlo");
   double lumi = 1.0e+10 * pow(0.197327, 2); //new, originally it was 1.0e+10 * pow(0.197327, 2);
   double eff = 0.85;
-  double time = 3.5 * 24.0 * 3600.0;             //here it was time = 48.0 * 24.0 * 3600.0;
-  if (Ebeam < 10.0) time = 1.5 * 24.0 * 3600.0;  //here it was time = 21.0 * 24.0 * 3600.0;
+  double time = 70.5 * 24.0 * 3600.0;             //here it was time = 48.0 * 24.0 * 3600.0;
+  if (Ebeam < 10.0) time = 30.5 * 24.0 * 3600.0;  //here it was time = 21.0 * 24.0 * 3600.0;
   Long64_t Nsim = 0;
   Long64_t Nrec = 0;
   double Xmin[6] = {0.0, 0.0, 0.0, 0.0, 0.0, -M_PI}; //0.0, 0.0, 0.0, 0.0, -M_PI, -M_PI 
