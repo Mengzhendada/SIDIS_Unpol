@@ -976,7 +976,7 @@ int CreateFileSivers(const char * rootfile1, const char * rootfile2, const char 
 */
     if (Hadron == 0)  //new, for the phih angle
       fprintf(file, "%d,%.1f,%.6f,%.6f,%.6f,%.6f,%.6f,%.6f,%s,%.1f,%.6f,%.6f,%.6f,%s,%s,%s\n",
-	      i, Ebeam, x, phih, y, z, Q2, Pt, "FUUT", 0.0, stat, systrel, systabs, "neutron", "pi+", "solid");
+	      i, Ebeam, x, phih, y, z, Q2, Pt, "FUUT", 0.0, stat, systrel, systabs, "proton", "pi+", "solid");
     else if (Hadron == 1)
       fprintf(file, "%d,%.1f,%.6f,%.6f,%.6f,%.6f,%.6f,%.6f,%s,%.1f,%.6f,%.6f,%.6f,%s,%s,%s\n",
 	      i, Ebeam, x, phih, y, z, Q2, Pt, "FUUT", 0.0, stat, systrel, systabs, "neutron", "pi-", "solid");
